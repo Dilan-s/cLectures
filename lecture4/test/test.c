@@ -1,0 +1,39 @@
+#include <stdio.h>
+
+int main() {
+  int a, b, c;
+
+  a = b = c = 5;
+
+  a = b = (c = 5);
+
+  a = (b = 5);
+
+  a = 5;
+
+  a = 1;
+  b = 2;
+  c = 3;
+
+  if (a > b || c > b){
+    printf("a > b || c > b : c > b evaluated\n");
+  }
+
+  if (a < b || c > b){
+    printf("a < b || c > b : c > b not evaluated\n");
+  }
+
+  int x = 3;
+
+  int y = x++;
+
+  /*
+  x++; //before increment
+  ++x; //after increment
+  */
+  
+  printf("x is %d\n", x);
+  printf("y is %d\n", y);
+  
+  return 0;
+}
