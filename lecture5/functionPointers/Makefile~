@@ -1,0 +1,10 @@
+CC = gcc
+CFLAGS = -Wall -g
+BUILD = sum
+
+all: $(BUILD)
+
+sum: sum.o
+
+clean:
+	/bin/rm -f $(BUILD) *.o core

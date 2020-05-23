@@ -1,0 +1,26 @@
+#include <stdlib.h>
+#include <stdio.h>
+
+int main(void) {
+
+  int size = 100;
+
+  int *arr = malloc(size * sizeof(int));
+  
+  /*
+  void *memory = malloc(size *sizeof(int));
+
+  int *arr = (int *) memory;
+  */
+  
+  for (int i = 0; i < size; ++i){
+
+    arr[i] = i;
+
+  }
+
+  //  free(arr);
+
+  return EXIT_SUCCESS;
+
+}
