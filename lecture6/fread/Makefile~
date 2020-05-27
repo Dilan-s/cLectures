@@ -1,0 +1,12 @@
+CC = gcc
+CFLAGS = -Wall -g
+BUILD = reading ASCIIIO
+
+all: $(BUILD)
+
+clean:
+	/bin/rm -f $(BUILD) *.o core *~
+
+reading: reading.o
+
+ASCIIIO: ASCIIIO.o
