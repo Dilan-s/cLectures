@@ -1,0 +1,19 @@
+/*
+struct A {
+};
+
+structB {
+  strunct A a; //definition of struct A must appear before struct B definition
+}
+*/
+//---------------
+/*
+struct A;
+
+structB {
+  struct A *a; //can be defined after as compiler knows it will be an 8 bit pointer here
+};
+
+struct A {
+}
+*/
