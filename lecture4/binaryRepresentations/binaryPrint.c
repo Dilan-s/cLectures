@@ -17,6 +17,8 @@ void printBits(uint32_t x) {
 }
 
 int main() {
+  int a = 1 << 16;
+  printBits(a);
   uint32_t x = 330;
   uint32_t y = 77;
   uint32_t z = 122;

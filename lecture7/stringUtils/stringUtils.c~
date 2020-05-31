@@ -1,0 +1,24 @@
+#include <string.h>
+#include <stdio.h>
+
+
+int main (){
+
+  char *string = "hello";
+  char *string2 = " there";
+  //strlen(char *) - does not include '\0'
+
+  printf("%s, length: %d\n", string, strlen(string));
+  printf("%s, length: %d\n", string2, strlen(string2));
+
+  //strcat(dest, src, n) - requies dest to have size strlen(dest) + n + 1
+
+  char *concat = malloc(5 + 6 + 1);
+
+  concat = "hello";
+
+  strcat(concat, string2, 6);
+
+  printf("concat: %s, length: %d\n", concat, strlen(concat));
+
+  
