@@ -1,0 +1,106 @@
+#include <stdio.h>
+
+
+char *read_file_errorProne(const char* path) {
+  FILE *in = fopen(path, "rb");
+  fseek(in, 0, SEEK_END);
+  const long file_size = ftell(in);
+  fseek(in, 0, SEEK_SET);
+  char *data = malloc(file_size);
+  fread(data, 1, file_size, in);
+  fclose(in);
+  return data;
+}
+
+
+int read_file(const char* path, int *size, char **out) {
+  FILE *in = fopen(path, "rb");
+  if (in == NULL) {
+    return -1;
+  }
+  
+  int res = fseek(in, 0, SEEK_END);
+  if (res == -1) {
+    fclose(in);
+    return -1;
+  }
+  
+  const long file_size = ftell(in);
+  if (file_size == -1) {
+    fclose(in);
+    return -1;
+  }
+  
+  res = fseek(in, 0, SEEK_SET);
+  if (res == -1) {
+    fclose(in);
+    return -1;
+  }
+  
+  *out = malloc(file_size);
+  if (*out == NULL) {
+    fclose(in);
+    return -1;
+  }
+  
+  res = fread(*out, 1, file_size, in);
+  if (res < file_size && ferror(in)) {
+    free(*out);
+    fclose(in);
+    return -1;
+  }
+  
+  if (fclose(in) != 0) {
+    free(*out);
+    return -1;
+  }
+  
+  return 0;
+}
+enum error_code { EC_OK, EC_INVALID_PARAM, EX_SYS};
+
+int read_file(const char* path, long *file_size, char **out) {
+  int status = EC_OK;
+  FILE *in = NULL;
+  *out = NULL;
+  if (path == NULL){
+    status=EC_INVALID_PARAM;
+    goto fail;
+  }
+  if ((in=fopen(path, "rb"))==NULL) {
+    status=EC_SYS+errno;
+    goto fail;
+  }
+  if (fseek(in, 0, SEEK_END)!=0) {
+    status=EC_SYS+errno;
+    goto fail;
+  }
+  if ((*file_size = ftell(in))==-1) {
+    status=EC_SYS+errno;
+    goto fail;
+  }
+  if (fseek(in, 0, SEEK_SET)==-1) {
+    status=EC_SYS+errno;
+    goto fail;
+  }
+  if ((*out=malloc(*file_size))==NULL) {
+    status=EC_SYS+errno;
+    goto fail;
+  }
+  const int read = fread(*out, 1, *file_size, in);
+  if (read!=*file_size && ferror(in)) {
+    status=EC_SYS+errno;
+    goto fail;
+  }
+  if (fclose(in) != 0) {
+    status=EC_SYS+errno;
+    goto fail;
+  }
+  return 0;
+ fail:
+  free(*out);
+  if (in != NULL) {
+    fclose(in);
+  }
+  return status;
+}
